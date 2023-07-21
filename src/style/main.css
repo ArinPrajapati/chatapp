@@ -1,0 +1,85 @@
+.mainPage{
+    width: 100dvw;
+    height: 100dvh;
+}
+
+.chat-header{
+    width: 94%;
+    font-size: 1.4rem;
+    display: flex;
+    flex-direction: row;
+    padding-inline:1rem ;
+    padding-top: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:2rem ;
+}
+
+#date{
+    margin-right: 3rem;
+}
+.message-area{
+    border: 2px solid;
+    overflow-y: scroll;
+    width: 94%;
+    margin: 0 auto;
+    -ms-overflow-style: none; 
+    scrollbar-width: none;  
+    height: 80%;
+    padding-bottom: 4rem;
+
+}
+
+.message-area::-webkit-scrollbar{
+    display: none;
+}
+.message-box{
+    display: flex;
+    flex-direction: column;
+    border:2px solid;
+    width: 25%;
+    margin-left:3rem;
+    margin-bottom: 2rem;
+    
+    
+}
+
+.message{
+ font-size: 1.4rem;
+ margin-top: .5rem;
+ margin-bottom: .5rem;
+}
+
+.userDetails{
+    font-size: .9rem;
+
+}
+.userDetails span{
+    margin-right: 1rem;
+}
+
+.userEmail{
+    font-style: italic;
+    
+}
+
+input{
+    width: 89%;
+    height: 2rem;
+    margin-left: 2.4rem;
+    
+    
+}
+
+.message-input{
+    
+    width: 100%;
+}
+
+.message-input button{
+  border: none;
+  background: #13678A;
+  height: 2rem;
+  width: 5%;
+  color: aliceblue;
+}

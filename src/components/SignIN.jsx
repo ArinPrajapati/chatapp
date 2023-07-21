@@ -22,6 +22,7 @@ export default function SignIN() {
    
   return (
     <div className="signin">
+      <nav>Chat App</nav>
       <div >SIGN IN TO ENTER</div>
       <button onClick={signInWithGoogle}>Sign with Google</button>
      

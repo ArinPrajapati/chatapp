@@ -4,7 +4,7 @@ import { db, auth } from "../config/firebase";
 import { useState, useEffect } from "react";
 import { onSnapshot, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-
+import "../style/main.css";
 export default function MainPage() {
   const navigate = useNavigate();
 
@@ -12,6 +12,7 @@ export default function MainPage() {
   const [allChat, setAllChat] = useState([]);
   const user = auth?.currentUser?.displayName;
   const userEm = auth?.currentUser?.email;
+  const chatArea = document.getElementById('chat-area');
 
   const currentTime = new Date();
   const options = {
@@ -21,7 +22,10 @@ export default function MainPage() {
     year: "numeric",
   };
   const formattedDate = currentTime.toLocaleDateString("en-IN", options);
-
+  /// sroll 
+  function scrollToBottom() {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
   // get chat data
 
   const chatCollectionRef = collection(db, "chats");
@@ -40,8 +44,10 @@ export default function MainPage() {
             ...doc.data(),
             id: doc.id,
           }))
-          .sort((a, b) => a.timestamp - b.timestamp)
+          .sort((a, b) => a.timestamp - b.timestamp);
+          scrollToBottom();
         setAllChat(filterData);
+       
       });
     } catch (error) {
       console.log(error);
@@ -64,9 +70,6 @@ export default function MainPage() {
     }
   };
 
-  
-
-
   // return to sign in when refesh
   useEffect(() => {
     if (auth.currentUser === null) {
@@ -77,32 +80,38 @@ export default function MainPage() {
   let youOrNot = false;
 
   return (
-    <>
-      <header>
-        {formattedDate}
-        {user}-{userEm}
-        Chat
+    <div className="mainPage">
+      <header className="chat-header">
+        <p id="date">{formattedDate}</p>
+        <p id="name">Chat</p>
+        <p id="user">
+          {user} <span id="email">-{userEm}</span>
+        </p>
       </header>
-      <div>
+      <div className="message-area" id="chat-area">
         {allChat?.map((chat) => (
-          <div key={chat.id}>
-            <p>
-              <span>{chat.time}</span>
-              <span>{chat.userMassage}</span>
-              <span>{chat.userName}</span>
-            </p>
-            <span>{chat.userEmail}</span>
+          <div className="message-box" key={chat.id}>
+           
+              <span className="userDetails">
+                <span>{chat.userName}</span>
+                <span id="userEmail">{chat.userEmail}</span>
+              </span>
+              <span className="message">{chat.userMassage}</span>
+              <span className="time">{chat.time}</span>
+           
           </div>
         ))}
       </div>
-      <div>
+      <div className="message-input">
         <input
           type="text"
           placeholder="meassage...."
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={onSend}>Send</button>
+        <button type="submit" onClick={onSend}>
+          Send
+        </button>
       </div>
-    </>
+    </div>
   );
 }
