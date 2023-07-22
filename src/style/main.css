@@ -34,7 +34,7 @@
     
 .message-area{
     border: 2px solid;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 94%;
     margin: 0 auto;
     -ms-overflow-style: none; 
@@ -54,6 +54,7 @@
     width: 25%;
     margin-left:3rem;
     margin-bottom: 2rem;
+    
     
     
 }

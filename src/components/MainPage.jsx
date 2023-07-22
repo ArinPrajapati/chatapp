@@ -87,8 +87,10 @@ export default function MainPage() {
   }, []);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [getChatData()]);
+    setTimeout(() => {
+      scrollToBottom();
+    }, 0.0001);
+  }, [getChatData]);
   
    
  
