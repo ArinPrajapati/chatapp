@@ -1,7 +1,7 @@
 import React from "react";
 
 import { db, auth } from "../config/firebase";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { onSnapshot, collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import "../style/main.css";
@@ -12,7 +12,9 @@ export default function MainPage() {
   const [allChat, setAllChat] = useState([]);
   const user = auth?.currentUser?.displayName;
   const userEm = auth?.currentUser?.email;
-  const chatArea = document.getElementById('chat-area');
+  // const chatArea = document.getElementById('chat-area');
+  const chatArea = useRef(null);
+  
 
   const currentTime = new Date();
   const options = {
@@ -24,7 +26,9 @@ export default function MainPage() {
   const formattedDate = currentTime.toLocaleDateString("en-IN", options);
   /// sroll 
   function scrollToBottom() {
-    chatArea.scrollTop = chatArea.scrollHeight;
+    if (chatArea.current) {
+      chatArea.current.scrollTop = chatArea.current.scrollHeight;
+    }
   }
   // get chat data
 
@@ -45,15 +49,16 @@ export default function MainPage() {
             id: doc.id,
           }))
           .sort((a, b) => a.timestamp - b.timestamp);
-          scrollToBottom();
+          
         setAllChat(filterData);
+        
        
       });
     } catch (error) {
       console.log(error);
     }
   };
-  // on sent message
+
 
   const onSend = async () => {
     try {
@@ -75,22 +80,30 @@ export default function MainPage() {
     if (auth.currentUser === null) {
       return navigate("/");
     }
-    getChatData();
-  }, []);
-  let youOrNot = false;
 
+    getChatData();
+
+    
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [getChatData()]);
+  
+   
+ 
   return (
     <div className="mainPage">
       <header className="chat-header">
         <p id="date">{formattedDate}</p>
-        <p id="name">Chat</p>
+        
         <p id="user">
           {user} <span id="email">-{userEm}</span>
         </p>
       </header>
-      <div className="message-area" id="chat-area">
+      <div className="message-area" id="chat-area" ref={chatArea}>
         {allChat?.map((chat) => (
-          <div className="message-box" key={chat.id}>
+          <div className="message-box"  key={chat.id}>
            
               <span className="userDetails">
                 <span>{chat.userName}</span>
